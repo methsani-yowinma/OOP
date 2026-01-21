@@ -1,0 +1,419 @@
+using L1;
+using System;
+class Program
+{
+    static void Main()
+    {
+        /*Salary salary = new Salary();
+        Console.WriteLine(salary.BasicSalary);
+        salary.BasicSalary = 5000.00;
+        Console.WriteLine(salary.BasicSalary);*/
+
+
+        //Salary sali = new Salary();
+        //sali.BasicSalary = 3000;
+        //sali.allowances = 400;
+        //sali.CalculateNetSalary();
+
+        Department department = new Department("hr","HR");
+
+        //PermenantEmployee permenantEmployee = new PermenantEmployee(department);
+
+        //permenantEmployee.displayEmployee();
+        //permenantEmployee.show();
+
+        //Employee employee = new Employee(department);
+
+        //employee.displayEmployee();
+
+        ContractEmployee contractEmployee = new ContractEmployee(department);
+
+        contractEmployee.DisplayContractEmployee();
+        
+        
+    }
+
+   
+
+}
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace L1
+{
+    public abstract class Employee
+    {
+        private string name;
+        private int id;
+        private string status;
+        private string appointmentDate;
+        private Department department;
+
+        public string Name { get => name; set => name = value; }
+        public int Id
+        {
+            get => id;
+            set
+            {
+                if (id != null)
+                {
+                    id = value;
+                }
+            }
+        }
+
+        public string AppointmentDate
+        {
+            get => appointmentDate;
+            set
+            {
+                if (appointmentDate != null)
+                {
+                    appointmentDate = value;
+                }
+            }
+        }
+
+        public string Status { get => this.status; set => this.status = value; }
+        public Department Department { get => department; set => department = value; }
+
+        public Employee(string name, int id,string status, string AppointmentDate, Department department)
+        {
+            this.Name = name;
+            this.Id = id;
+            this.AppointmentDate = AppointmentDate;
+            this.status = status;
+            Department = department;
+        }
+
+        public Employee(string name, int id, string status, Department department) : this(name, id,status,"", department) { }
+
+        public Employee(string name, int id, Department department) :this(name,id,"",department){ }
+
+        public Employee(string name,Department department) : this(name, 0, department) { }
+        public Employee(Department department) : this("", department) { }
+
+        public void printProfile()
+        {
+            Console.WriteLine("id" + id);
+            Console.WriteLine("name" + name);
+            Console.WriteLine("status" + status);
+            Console.WriteLine("AppointmentDate" + AppointmentDate);
+        }
+
+        protected virtual void showEmployee()
+        {
+            Console.WriteLine("This is an Employee Class");
+        }
+
+        public abstract void showDepartment();
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace L1
+{
+    public class ContractEmployee : Employee
+    {
+        private double hourlyRate;
+
+        public double HourlyRate { get => hourlyRate; set => hourlyRate = value; }
+
+        public ContractEmployee(Department department) : base(department) { }
+
+        public new void DisplayContractEmployee()
+        {
+            Console.WriteLine("This is Contract Employee Class");
+        }
+
+        public override void showDepartment()
+        {
+            Console.WriteLine(base.Department);
+        }
+
+    }
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace L1
+{
+    public class PermenantEmployee : Employee
+    {
+        private double bonus;
+
+        public double Bonus { get => bonus; set => bonus = value; }
+
+        public PermenantEmployee(Department department) : base(department) { }
+
+        public void show()
+        {
+            base.displayEmployee();
+            Console.WriteLine("This is a Permanant Employee Class");
+        }
+
+        
+    }
+
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace L1
+{
+    public sealed class Senior_Employee : PermenantEmployee
+    {
+        private double fuel_allowance;
+
+        public double Fuel_allowance { get => fuel_allowance; set => fuel_allowance = value; }
+
+        public Senior_Employee(Department department) : base(department) { }
+
+    }
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace L1
+{
+    public class Department
+    {
+        private string code;
+        private string id;
+        private Employee[] employee;
+
+        public string Code { get => code; set => code = value; }
+        public string Id { get => id; set => id = value; }
+        public Employee[] Employee
+        {
+            get { return employee; }
+        }
+
+        public Department(string code, string id)
+        {
+            this.code = code;
+            this.id = id;
+        }
+
+        public Department(string code) : this(code, "") { }
+
+        public Department() : this("") { }
+
+        public void addEmployee() 
+        {
+            foreach (Employee emp in Employee) 
+            { 
+                Console.WriteLine($"{emp.Id},{emp.Name}");
+            }
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace L1
+{
+    public class Salary
+    {
+        private double basicSalary;
+        private double allowances;
+        private double netSalary;
+        private PaySlip paySlip = new PaySlip();
+
+        /*public double getBasicSalary() 
+        { 
+            return basicSalary; 
+        }
+        public void setBasicSalary(double basicSalary)
+        {   
+            this.basicSalary = basicSalary; 
+        } */
+        
+        public double BasicSalary
+        {
+            get => basicSalary;
+            set
+            {
+                if (value >= 0.0)
+                {
+                    basicSalary = value;
+                }
+                else
+                {
+                    basicSalary = 1000;
+                }
+            }
+        }
+        public double Allowances
+        {
+            get => allowances;
+            set
+            {
+                if (value > 0.0)
+                {
+                    allowances = value;
+                }
+            }
+        }
+
+        public PaySlip PaySlip { get => paySlip; set => paySlip = value; }
+        public double NetSalary { get => netSalary; set => netSalary = value; }
+
+
+        /*public double getallowances()
+        {
+            return allowances;
+        }
+
+        public void setallowances(double allowances)
+        {
+            this.allowances = allowances;
+        }
+        */
+
+        //public double getBasic => basicSalary;
+        //public void setBasic(double basic) => basicSalary = basic;
+
+        public Salary(double basicSalary, double allowances)
+        {
+            BasicSalary = basicSalary;
+            Allowances = allowances;
+            NetSalary = 0.0;
+        }
+
+        public Salary(double basicSalary, Salary salary) : this(basicSalary, 0.0)
+        {
+        }
+
+       /*public Salary(Salary salary) : this(0.0,salary)
+        {
+            //basicSalary = 0.0;
+            //allowances = 0.0;
+            //netSalary= 0.0;
+        }*/
+
+        public Salary() : this(0.0) { }
+
+        public double CalculateNetSalary()
+        {
+            NetSalary = BasicSalary + Allowances;
+            Console.WriteLine(NetSalary);
+            return NetSalary;
+        }
+
+        
+    }
+    
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace L1
+{
+    public sealed class Payroll
+    {
+        private Employee employee;
+        private PaySlip[] paySlips;
+        public void processSalary()
+        {
+
+        }
+
+    }
+
+    
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace L1
+{
+    public sealed class PaySlip
+    {
+        private int year;
+        private int month;
+        private Payroll payrolls;
+        private Salary salary = new Salary();
+
+        public int Year
+        {
+            get => year;
+            set
+            {
+                if (year < 2000 && year > 3000)
+                {
+                    year = value;
+                }
+            }
+        }
+        public int Month
+        {
+            get => month;
+            set
+            {
+                if (month <= 12 && month >= 1)
+                {
+                    month = value;
+                }
+            }
+        }
+
+        public Salary Salary { get => salary; set => salary = value; }
+
+        public PaySlip(int year, int month, Salary salary)
+        {
+            this.year = year;
+            this.month = month;
+            this.Salary = salary;
+        }
+
+        public PaySlip(int year, Salary salary) : this(year, 0, salary) { }
+
+        public PaySlip(Salary salary):this(0000,salary) { }
+
+        public PaySlip():this(2001,11,new Salary()){ }
+
+    }
+}
+
+
